@@ -3,14 +3,18 @@ server:
 spring:
   application:
     name: spring-cloud-config-server
+  profiles:
+    active: native
   cloud:
     config:
       server:
-        git:
-          uri: https://github.com/damuls/spring-cloud-starter/     # 配置git仓库的地址
-          search-paths: config-repo                             # git仓库地址下的相对地址，可以配置多个，用,分割。
-          username: yourname                                        # git仓库的账号
-          password: yourpass                                    # git仓库的密码
+        native:
+          search-locations: classpath:/config
+        #git:
+          #uri: https://github.com/damuls/spring-cloud-starter/     # 配置git仓库的地址
+          #usearch-paths: config-repo                             # git仓库地址下的相对地址，可以配置多个，用,分割。
+          #uusername: yourname                                        # git仓库的账号
+          #upassword: yourpass                                    # git仓库的密码
   rabbitmq:
     host: 192.168.0.6
     port: 5672

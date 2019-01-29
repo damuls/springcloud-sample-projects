@@ -15,6 +15,7 @@ package test.tony.cloud.service.zuul.fallback;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.netflix.zuul.filters.route.ZuulFallbackProvider;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,7 @@ import java.io.InputStream;
  * @since 1.0.0
  */
 @Component
+@RefreshScope
 public class ProductServiceFallbackProvider implements ZuulFallbackProvider {
     protected Logger logger = LoggerFactory.getLogger(ProductServiceFallbackProvider.class);
 

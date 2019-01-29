@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-
-	<artifactId>twostepsfromjava-clouds</artifactId>
+    <groupId>tony.cloud</groupId>
+	<artifactId>tony-clouds</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<name>Spring Cloud Sample Projects</name>
 	<packaging>pom</packaging>
@@ -18,7 +18,6 @@
         <module>service-api</module>
         <module>product-service</module>
         <module>user-service</module>
-        
         <module>mall-web</module>
     </modules>    
 </project>

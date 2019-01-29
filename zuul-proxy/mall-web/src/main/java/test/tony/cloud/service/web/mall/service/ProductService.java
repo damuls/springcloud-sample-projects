@@ -13,11 +13,11 @@
  */
 package test.tony.cloud.service.web.mall.service;
 
-import test.tony.cloud.product.dto.Product;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import test.tony.cloud.product.dto.Product;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ import java.util.List;
  * @author CD826(CD826Dong@gmail.com)
  * @since 1.0.0
  */
-@FeignClient("PRODUCT-SERVICE")
+@FeignClient(name="PRODUCT-SERVICE",fallback = ProductServiceHystrix.class)
 public interface ProductService {
 
     @RequestMapping(value = "/products", method = RequestMethod.GET)
@@ -36,5 +36,8 @@ public interface ProductService {
 
     @RequestMapping(value = "/products/{itemCode}", method = RequestMethod.GET)
     Product loadByItemCode(@PathVariable("itemCode") String itemCode);
+
+    @RequestMapping(value = "/product/hello", method = RequestMethod.GET)
+    String productHello();
 
 }

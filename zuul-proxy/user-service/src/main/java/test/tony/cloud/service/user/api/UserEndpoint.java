@@ -21,27 +21,32 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
 
-/**
- * User API服务
- *
- * @author CD826(CD826Dong@gmail.com)
- * @since 1.0.0
- */
 @RestController
 @RequestMapping("/users")
 @RefreshScope
 public class UserEndpoint {
     protected Logger logger = LoggerFactory.getLogger(UserEndpoint.class);
 
-    @Value("${neo.product}")
+    @Value("${hello}")
     private String hello;
 
     @Value("${server.port:2200}")
     private int serverPort = 2200;
 
     @RequestMapping("/hello")
-    public String from() {
+    public String hello() {
         return this.hello;
+    }
+
+    @RequestMapping("/from")
+    public String from(@RequestParam String name) {
+        logger.info("request two name is "+name);
+        try{
+            Thread.sleep(1000000);
+        }catch ( Exception e){
+            logger.error(" hello two error",e);
+        }
+        return "hello "+name+"，this is two messge";
     }
 
     @RequestMapping(value = "/{loginName}", method = RequestMethod.GET)

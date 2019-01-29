@@ -13,14 +13,17 @@
  */
 package test.tony.cloud.service.web.mall.controller;
 
-import test.tony.cloud.product.dto.Product;
-import test.tony.cloud.service.web.mall.service.ProductService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+import test.tony.cloud.product.dto.Product;
+import test.tony.cloud.service.web.mall.service.ProductService;
 
 import java.util.List;
 
@@ -38,6 +41,18 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private LoadBalancerClient loadBalancerClient;
+
+    @RequestMapping(value="hello",method = RequestMethod.GET)
+    public String hello(){
+        return this.productService.productHello();
+    }
+
+
     @RequestMapping(method = RequestMethod.GET)
     public List<Product> list() {
         return this.productService.findAll();
@@ -46,5 +61,17 @@ public class ProductController {
     @RequestMapping(value = "/{itemCode}", method = RequestMethod.GET)
     public Product detail(@PathVariable String itemCode) {
         return this.productService.loadByItemCode(itemCode);
+    }
+
+    @HystrixCommand(fallbackMethod = "getDefaultUser")
+    @RequestMapping("/getUser")
+    public String getUser() {
+        String forObject = restTemplate.getForObject("http://PRODUCT-SERVICE/getUser", String.class);
+        return forObject;
+    }
+
+    private String getDefaultUser() {
+        System.out.println("熔断，默认回调函数");
+        return "{\"username\":\"admin\",\"age\":\"-1\"}";
     }
 }
